@@ -1,20 +1,31 @@
 import pandas as pd
-import datetime
-import random
+from datetime import *
+from random import *
 
-df = pd.DataFrame(columns=["Date", "Mood", "Energy"])
-dict1 = {
-}
+date_one = datetime(2023,4,30)
+date_gen = lambda x: date_one + timedelta(days=x)
+mood_gen = lambda: randint(1,10)
+enrg_gen = lambda: randint(1,10)
 
-date = datetime.date(2023, 5, 1)
-for ddummy in range(32):
-    dict1.update({"Date" : date, "Mood" : random.randrange(1,11), "Energy" : random.randrange(1,11)})
-    date += datetime.timedelta(days=1)
-    df1 = pd.DataFrame(dict1, index=[0])
-    df = pd.concat([df, df1], ignore_index=True)
-    print(df)
-    print("***")
+dict_list = []
 
-print(df)
-print("Average Mood = " + str((df["Mood"].mean())))
-print("Average Energy = " + str(df["Energy"].mean()))
+for x in range(1,32):
+    new_date = date_gen(x)
+    dict_list.append(
+        {
+            "Date": new_date,
+            "Mood": mood_gen(),
+            "Energy": enrg_gen()
+        }
+    )
+
+df = pd.DataFrame(dict_list)
+
+
+dateinput = pd.to_datetime("19/5/2023", dayfirst=True)
+
+weekday = dateinput.isocalendar()[2]
+startdate = dateinput - timedelta(days=weekday-1)
+enddate = startdate + timedelta(days=6)
+result = df.query('Date >= @startdate & Date <= @enddate')
+print(type(result))
