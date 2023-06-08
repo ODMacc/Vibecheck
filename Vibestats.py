@@ -28,4 +28,4 @@ class Vibestats:
         startdate = dateinput - timedelta(days=weekday-1)
         enddate = startdate + timedelta(days=6)
         averages = self.df.query('Date >= @startdate & Date <= @enddate').mean(numeric_only=True)
-        print(averages)
+        return averages
